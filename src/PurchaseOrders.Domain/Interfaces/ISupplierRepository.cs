@@ -13,6 +13,6 @@ namespace PurchaseOrders.Domain.Interfaces
         Task<Supplier?> GetByIdAsync(int id);
         Task<Supplier> AddAsync(Supplier supplier);
         Task UpdateAsync(Supplier supplier);
-        Task DeleteAsync(Supplier supplier);
+        Task DeactivateAsync(Supplier supplier);
     }
 }

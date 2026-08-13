@@ -15,6 +15,8 @@ namespace PurchaseOrders.Domain.Entities
         public string PasswordHash { get; set; } = string.Empty;
         public UserRole Role { get; set; }
 
+        public bool IsActive { get; set; } = true;
+
         public int? SupervisorId { get; set; }
         public User? Supervisor { get; set; }
         public ICollection<User> Subordinates { get; set; } = new List<User>();

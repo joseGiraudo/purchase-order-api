@@ -44,9 +44,13 @@ namespace PurchaseOrders.Application.Services
             return ToDto(userWithSupervisor!);
         }
 
-        public Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetByIdAsync(id);
+            if (user is null) return false;
+
+            await _userRepository.DeactivateAsync(user);
+            return true;
         }
 
         public async Task<List<UserDto>> GetAllAsync()
@@ -94,6 +98,7 @@ namespace PurchaseOrders.Application.Services
             Name = user.Name,
             Email = user.Email,
             Role = user.Role.ToString(),
+            IsActive = user.IsActive,
             SupervisorId = user.SupervisorId,
             SupervisorName = user.Supervisor?.Name // el ?. evita el NullReferenceException si no tiene supervisor
         };

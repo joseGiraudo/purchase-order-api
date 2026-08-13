@@ -39,7 +39,7 @@ namespace PurchaseOrders.Application.Services
             var supplier = await _repository.GetByIdAsync(id);
             if (supplier is null) return false;
 
-            await _repository.DeleteAsync(supplier);
+            await _repository.DeactivateAsync(supplier);
             return true;
         }
 
@@ -78,7 +78,8 @@ namespace PurchaseOrders.Application.Services
             Name = supplier.Name,
             TaxId = supplier.TaxId,
             ContactName = supplier.ContactName,
-            Email = supplier.Email
+            Email = supplier.Email,
+            IsActive = supplier.IsActive
         };
     }
 }

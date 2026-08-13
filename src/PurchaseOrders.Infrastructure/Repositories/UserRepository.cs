@@ -23,6 +23,7 @@ namespace PurchaseOrders.Infrastructure.Repositories
         {
             return await _context.Users
                 .Include(u => u.Supervisor)
+                .Where(u => u.IsActive)
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -54,9 +55,10 @@ namespace PurchaseOrders.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(User user)
+        public async Task DeactivateAsync(User user)
         {
-            _context.Users.Remove(user);
+            user.IsActive = false;
+            _context.Users.Update(user);
             await _context.SaveChangesAsync();
         }
     }

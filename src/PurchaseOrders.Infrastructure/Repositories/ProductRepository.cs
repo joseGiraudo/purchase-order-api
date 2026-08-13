@@ -23,6 +23,7 @@ namespace PurchaseOrders.Infrastructure.Repositories
         {
             return await _context.Products
                         .Include(p => p.Supplier)
+                        .Where(p => p.IsActive)
                         .AsNoTracking()
                         .ToListAsync();
         }
@@ -47,9 +48,10 @@ namespace PurchaseOrders.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Product product)
+        public async Task DeactivateAsync(Product product)
         {
-            _context.Products.Remove(product);
+            product.IsActive = false;
+            _context.Products.Update(product);
             await _context.SaveChangesAsync();
         }
     }

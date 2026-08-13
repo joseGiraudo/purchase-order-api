@@ -72,7 +72,7 @@ namespace PurchaseOrders.Application.Services
             {
                 return false;
             }
-            await _productRepository.DeleteAsync(product);
+            await _productRepository.DeactivateAsync(product);
             return true;
         }
 
@@ -88,7 +88,8 @@ namespace PurchaseOrders.Application.Services
                 Name = product.Name,
                 Description = product.Description,
                 ReferencePrice = product.ReferencePrice,
-                SupplierId = product.SupplierId
+                SupplierId = product.SupplierId,
+                IsActive = product.IsActive,
             };
         }
 

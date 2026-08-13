@@ -16,6 +16,7 @@ namespace PurchaseOrders.Domain.Entities
         public string? Description { get; set; }
         public string? Sku { get; set; }
         public decimal ReferencePrice { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }

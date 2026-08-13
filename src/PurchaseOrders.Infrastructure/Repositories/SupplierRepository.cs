@@ -26,9 +26,10 @@ namespace PurchaseOrders.Infrastructure.Repositories
             return supplier;
         }
 
-        public async Task DeleteAsync(Supplier supplier)
+        public async Task DeactivateAsync(Supplier supplier)
         {
-            _context.Suppliers.Remove(supplier);
+            supplier.IsActive = false;
+            _context.Suppliers.Update(supplier);
             await _context.SaveChangesAsync();
         }
 

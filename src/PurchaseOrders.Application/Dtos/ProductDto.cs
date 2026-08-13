@@ -16,6 +16,7 @@ namespace PurchaseOrders.Application.Dtos
         public string? Description { get; set; }
         public string? Sku { get; set; }
         public decimal ReferencePrice { get; set; }
+        public bool IsActive { get; set; }
     }
 
     public class CreateProductDto
