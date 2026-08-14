@@ -17,9 +17,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.22.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PurchaseOrders.Application\PurchaseOrders.Application.csproj" />
     <ProjectReference Include="..\PurchaseOrders.Domain\PurchaseOrders.Domain.csproj" />
   </ItemGroup>
 
