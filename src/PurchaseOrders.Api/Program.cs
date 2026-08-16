@@ -60,6 +60,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // el puerto que te muestre Vite
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 
 var app = builder.Build();
 
@@ -75,6 +86,9 @@ app.UseHttpsRedirection();
 app.UseAuthentication(); // para JWT
 
 app.UseAuthorization();
+
+// CORS
+app.UseCors("AllowFrontend");
 
 app.MapControllers();
 
