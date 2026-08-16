@@ -16,9 +16,9 @@ namespace PurchaseOrders.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProductDto>>> GetAll()
+        public async Task<ActionResult<List<ProductDto>>> GetAll([FromQuery] int? supplierId)
         {
-            var products = await _productService.GetAllAsync();
+            var products = await _productService.GetAllAsync(supplierId);
             return Ok(products);
         }
 

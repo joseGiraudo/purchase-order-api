@@ -21,9 +21,9 @@ namespace PurchaseOrders.Application.Services
             _supplierRepository = supplierRepository;
         }
 
-        public async Task<List<ProductDto>> GetAllAsync()
+        public async Task<List<ProductDto>> GetAllAsync(int? supplierId)
         {
-            var products = await _productRepository.GetAllAsync();
+            var products = await _productRepository.GetAllAsync(supplierId);
             return products.Select(MapToDto).ToList();
         }
 

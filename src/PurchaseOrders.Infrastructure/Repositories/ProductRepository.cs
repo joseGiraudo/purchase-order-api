@@ -19,13 +19,18 @@ namespace PurchaseOrders.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<List<Product>> GetAllAsync()
+        public async Task<List<Product>> GetAllAsync(int? supplierId)
         {
-            return await _context.Products
-                        .Include(p => p.Supplier)
-                        .Where(p => p.IsActive)
-                        .AsNoTracking()
-                        .ToListAsync();
+            var query = _context.Products
+                .Include(p => p.Supplier)
+                .Where(p => p.IsActive);
+
+            if (supplierId.HasValue)
+            {
+                query = query.Where(p => p.SupplierId == supplierId.Value);
+            }
+
+            return await query.AsNoTracking().ToListAsync();
         }
 
         public async Task<Product?> GetByIdAsync(int id)

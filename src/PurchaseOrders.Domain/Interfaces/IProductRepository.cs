@@ -9,7 +9,7 @@ namespace PurchaseOrders.Domain.Interfaces
 {
     public interface IProductRepository
     {
-        Task<List<Product>> GetAllAsync();
+        Task<List<Product>> GetAllAsync(int? supplierId);
         Task<Product?> GetByIdAsync(int id);
         Task<Product> AddAsync(Product product);
         Task UpdateAsync(Product product);
