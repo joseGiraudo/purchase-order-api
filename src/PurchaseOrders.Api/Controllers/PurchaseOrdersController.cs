@@ -16,9 +16,9 @@ namespace PurchaseOrders.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PurchaseOrderDto>>> GetAll()
+        public async Task<ActionResult<List<PurchaseOrderDto>>> GetAll([FromQuery] int currentUserId)
         {
-            var orders = await _service.GetAllAsync();
+            var orders = await _service.GetAllAsync(currentUserId);
             return Ok(orders);
         }
 

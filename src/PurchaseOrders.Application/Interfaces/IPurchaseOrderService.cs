@@ -9,7 +9,7 @@ namespace PurchaseOrders.Application.Interfaces
 {
     public interface IPurchaseOrderService
     {
-        Task<List<PurchaseOrderDto>> GetAllAsync();
+        Task<List<PurchaseOrderDto>> GetAllAsync(int currentUserId);
         Task<PurchaseOrderDto?> GetByIdAsync(int id);
         Task<PurchaseOrderDto?> CreateAsync(CreatePurchaseOrderDto dto);
         Task<PurchaseOrderDto?> ChangeStatusAsync(int id, ChangeOrderStatusDto dto);

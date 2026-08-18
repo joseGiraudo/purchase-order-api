@@ -19,19 +19,31 @@ namespace PurchaseOrders.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<List<PurchaseOrder>> GetAllAsync() =>
-        await _context.PurchaseOrders
-            .Include(o => o.Employee)
-            .Include(o => o.Supplier)
-            .Include(o => o.Items).ThenInclude(i => i.Product)
-            .AsNoTracking()
-            .ToListAsync();
+        public async Task<List<PurchaseOrder>> GetAllAsync(int? employeeId, int? supervisorId)
+        {
+            var query = _context.PurchaseOrders
+                .Include(o => o.Employee)
+                .Include(o => o.Supplier)
+                .Include(o => o.Items).ThenInclude(i => i.Product)
+                .Include(o => o.StatusHistory).ThenInclude(sh => sh.User)
+                .AsQueryable();
+
+            if(employeeId.HasValue)
+            {
+                query = query.Where(o => o.EmployeeId == employeeId.Value);
+            } else if(supervisorId.HasValue) {
+                query = query.Where(o => o.Employee.SupervisorId == supervisorId.Value); // esto se traduce a un JOIN
+            }
+
+            return await query.AsNoTracking().ToListAsync();
+        }
 
         public async Task<PurchaseOrder?> GetByIdAsync(int id) =>
             await _context.PurchaseOrders
                 .Include(o => o.Employee)
                 .Include(o => o.Supplier)
                 .Include(o => o.Items).ThenInclude(i => i.Product)
+                .Include(o => o.StatusHistory).ThenInclude(sh => sh.User)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
         public async Task<PurchaseOrder> AddAsync(PurchaseOrder order)

@@ -27,11 +27,19 @@ namespace PurchaseOrders.Application.Services
             _productRepository = productRepository;
         }
 
-        public async Task<List<PurchaseOrderDto>> GetAllAsync()
+        public async Task<List<PurchaseOrderDto>> GetAllAsync(int currentUserId)
         {
-            var purchaseOrders = await _purchaseOrderRepository.GetAllAsync();
+            var currentUser = await _userRepository.GetByIdAsync(currentUserId);
+            if (currentUser is null) return new List<PurchaseOrderDto>(); // se deberia lanzar una excepcion
 
-            return purchaseOrders.Select(ToDto).ToList();
+            List<PurchaseOrder> orders = currentUser.Role switch
+            {
+                UserRole.Employee => await _purchaseOrderRepository.GetAllAsync(employeeId: currentUserId, supervisorId: null), // Empleado
+                UserRole.Supervisor => await _purchaseOrderRepository.GetAllAsync(employeeId: null, supervisorId: currentUserId), // Supervisor
+                _ => await _purchaseOrderRepository.GetAllAsync(employeeId: null, supervisorId: null), // Admin
+            };
+
+            return orders.Select(ToDto).ToList();
         }
 
         public async Task<PurchaseOrderDto?> GetByIdAsync(int id)
@@ -168,7 +176,17 @@ namespace PurchaseOrders.Application.Services
                 ProductName = i.Product.Name,
                 Quantity = i.Quantity,
                 UnitPrice = i.UnitPrice
-            }).ToList()
+            }).ToList(),
+            StatusHistory = order.StatusHistory
+                .OrderBy(h => h.ChangedAt)
+                .Select(h => new StatusHistoryDto
+                {
+                    PreviousStatus = h.PreviousStatus.ToString(),
+                    NewStatus = h.NewStatus.ToString(),
+                    ChangedByName = h.User.Name,
+                    ChangedAt = h.ChangedAt,
+                    Comment = h.Comment
+                }).ToList()
         };
 
 

@@ -28,6 +28,8 @@ namespace PurchaseOrders.Application.Dtos
         public decimal TotalAmount { get; set; }
         public string? RejectionReason { get; set; }
         public List<OrderItemDto> Items { get; set; } = new();
+
+        public List<StatusHistoryDto> StatusHistory { get; set; } = new();
     }
 
     public class CreateOrderItemDto
@@ -48,5 +50,14 @@ namespace PurchaseOrders.Application.Dtos
         public string NewStatus { get; set; } = string.Empty;
         public int ChangedByUserId { get; set; }
         public string? Comment { get; set; } // obligatorio si NewStatus es "Rejected", ver nota abajo
+    }
+
+    public class StatusHistoryDto
+    {
+        public string PreviousStatus { get; set; } = string.Empty;
+        public string NewStatus { get; set; } = string.Empty;
+        public string ChangedByName { get; set; } = string.Empty;
+        public DateTime ChangedAt { get; set; }
+        public string? Comment { get; set; }
     }
 }
